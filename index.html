@@ -104,141 +104,348 @@
                 <div class="trend-title">Популярное сейчас</div>
                 <div class="trend-item"><div class="trend-name">#VibeO_Launch</div><div class="trend-count">124K кликов</div></div>
                 <div class="trend-item"><div class="trend-name">#GlobalNetwork</div><div class="trend-count">89K кликов</div></div>
-❤️ <span id="likeCount">42</span>
-                </button>
-            </div>
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeO — Reels & Stories</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        
+        body { 
+            background-color: #000; 
+            color: #fff; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+            overflow: hidden;
+        }
 
-            <div id="searchBlock" class="search-container">
-                <input type="text" id="searchInput" class="search-input" placeholder="Введите поисковый запрос...">
-                <button class="search-btn" onclick="executeSearch()">Найти</button>
-            </div>
+        /* Umumiy konteyner (Mobil telefon shakli) */
+        .phone-wrapper {
+            width: 100%;
+            max-width: 420px;
+            height: 100vh;
+            background: #000;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid #262626;
+            border-right: 1px solid #262626;
+        }
 
-            <div id="messengerBlock" class="messenger-box">
-                <div class="chat-header-container">
-                    <div class="chat-header-title">Диалоги</div>
-                    <div class="user-search-box">
-                        <input type="text" id="userSearchInput" class="user-search-input" placeholder="Поиск пользователя...">
-                        <button class="user-search-btn" onclick="searchUser()">Найти</button>
-                    </div>
-                </div>
-                <div id="chatBody" class="chat-body">
-                    <div class="msg-received">Добро пожаловать в VibeO! Рады вас видеть.</div>
-                </div>
-                <div class="chat-footer">
-                    <input type="text" id="chatInput" class="chat-input" placeholder="Напишите сообщение...">
-                    <button class="btn-send" onclick="sendMessage()">Отправить</button>
-                </div>
+        /* Tepadagi Stories paneli */
+        .stories-container {
+            display: flex;
+            gap: 15px;
+            padding: 10px 15px;
+            overflow-x: auto;
+            border-bottom: 1px solid #1c1c1e;
+            background: #000;
+        }
+        .stories-container::-webkit-scrollbar { display: none; }
+        
+        .story-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+            color: #a5a5a5;
+            cursor: pointer;
+        }
+        .story-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 2px solid #00f2fe;
+            padding: 2px;
+            background: radial-gradient(circle, #252836 0%, #000 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        /* Asosiy kontent maydoni */
+        .main-content {
+            flex: 1;
+            overflow-y: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Instagram Reels uslubidagi karta */
+        .reels-container {
+            flex: 1;
+            position: relative;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .video-player {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #1c1b29 0%, #000000 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 100px;
+            position: relative;
+        }
+
+        /* Chap tomondagi video ma'lumotlari */
+        .video-overlay-info {
+            position: absolute;
+            bottom: 20px;
+            left: 15px;
+            right: 70px;
+            z-index: 10;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+        }
+        .author-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .author-badge {
+            font-weight: bold;
+            color: #fff;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        .follow-btn {
+            background: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .video-description {
+            font-size: 14px;
+            color: #efefef;
+            line-height: 1.4;
+        }
+
+        /* O'ng tomondagi interaktiv tugmalar (Like, Comment, Share) */
+        .action-sidebar {
+            position: absolute;
+            right: 12px;
+            bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            z-index: 10;
+        }
+        .action-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .action-icon {
+            font-size: 26px;
+            transition: transform 0.2s;
+        }
+        .action-btn:active .action-icon { transform: scale(0.8); }
+        .action-count { font-size: 12px; color: #fff; }
+        .liked .action-icon { color: #ff3040; animation: pop 0.3s ease; }
+        
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        /* Qidiruv sahifasi */
+        .search-screen {
+            display: none;
+            padding: 15px;
+            flex-direction: column;
+            gap: 15px;
+            height: 100%;
+        }
+        .search-bar {
+            display: flex;
+            background: #262626;
+            border-radius: 10px;
+            padding: 8px 12px;
+            align-items: center;
+        }
+        .search-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            outline: none;
+            font-size: 15px;
+        }
+        .search-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            overflow-y: auto;
+        }
+        .grid-item {
+            aspect-ratio: 1;
+            background: #1c1c1e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+
+        /* Chat (Messenger) sahifasi */
+        .chat-screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            background: #000;
+        }
+        .chat-header {
+            padding: 15px;
+            border-bottom: 1px solid #262626;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .chat-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .msg {
+            max-width: 75%;
+            padding: 10px 14px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .msg.received { background: #262626; align-self: flex-start; }
+        .msg.sent { background: #3797f0; color: #fff; align-self: flex-end; }
+        .chat-footer {
+            padding: 10px 15px;
+            border-top: 1px solid #262626;
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input {
+            flex: 1;
+            background: #1c1c1e;
+            border: 1px solid #363638;
+            border-radius: 20px;
+            padding: 8px 15px;
+            color: #fff;
+            outline: none;
+        }
+        .send-btn {
+            background: transparent;
+            border: none;
+            color: #3797f0;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Profil / Ro'yxatdan o'tish ekrani overlay */
+        .auth-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        .auth-card {
+            width: 85%;
+            background: #1c1c1e;
+            border-radius: 14px;
+            padding: 25px;
+            text-align: center;
+        }
+        .auth-card h3 { margin-bottom: 15px; font-size: 20px; }
+        .auth-input {
+            width: 100%;
+            background: #000;
+            border: 1px solid #363638;
+            border-radius: 8px;
+            padding: 10px;
+            color: #fff;
+            margin-bottom: 10px;
+            outline: none;
+        }
+        .auth-btn {
+            width: 100%;
+            background: #3797f0;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* Pastki Instagram uslubidagi Navigatsiya paneli */
+        .bottom-nav {
+            height: 50px;
+            border-top: 1px solid #262626;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: #000;
+        }
+        .nav-item {
+            background: transparent;
+            border: none;
+            color: #737373;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 10px;
+        }
+        .nav-item.active { color: #fff; }
+    </style>
+</head>
+<body>
+
+    <div class="phone-wrapper">
+        
+        <!-- Ro'yxatdan o'tish -->
+        <div id="authScreen" class="auth-overlay">
+            <div class="auth-card">
+                <h3>VibeO-ga kirish</h3>
+                <input type="text" id="regNick" class="auth-input" placeholder="Foydalanuvchi nomi (username)">
+                <button class="auth-btn" onclick="handleLogin()">Kirish</button>
             </div>
         </div>
 
-        <div class="sidebar-right">
-            <div class="trend-box">
-                <div class="trend-title">Актуальные тренды</div>
-                <div class="trend-item">
-                    <div class="trend-name">#VibeO2026</div>
-                    <div class="trend-count">1.2M просмотров</div>
-                </div>
-                <div class="trend-item">
-                    <div class="trend-name">#WebDevelopment</div>
-                    <div class="trend-count">850K просмотров</div>
-                </div>
-                <div class="trend-item">
-                    <div class="trend-name">#GlobalNetwork</div>
-                    <div class="trend-count">430K просмотров</div>
-                </div>
+        <!-- Istoriyalar (Faqat Bosh sahifada chiqadi) -->
+        <div id="storiesPanel" class="stories-container">
+            <div class="story-item">
+                <div class="story-avatar" id="myAvatar">👤</div>
+                <span>Sizniki</span>
             </div>
-        </div>
-    </div>
+            <div class="story-item">
+                <div class="story-avatar">🐱</div>
+                <span>anvar_01</span>
+            </div>
+            <div class="story-item">
+                <div class="story-avatar">😎</div>
 
-    <script>
-        // Регистрация аккаунта
-        function accountRegister() {
-            const email = document.getElementById('regEmail').value.trim();
-            const nick = document.getElementById('regNick').value.trim();
-            const phone = document.getElementById('regPhone').value.trim();
-
-            if (!email || !nick || !phone) {
-                alert('Пожалуйста, заполните все поля!');
-                return;
-            }
-
-            const formattedNick = nick.startsWith('@') ? nick : '@' + nick;
-            document.getElementById('uBadge').innerText = formattedNick;
-            document.getElementById('regScreen').style.display = 'none';
-        }
-
-        // Переключение меню (Главная, Поиск, Чаты)
-        function sm(menuId) {
-            document.querySelectorAll('.menu-link').forEach(link => link.classList.remove('active'));
-            document.getElementById(menuId).classList.add('active');
-
-            const shorts = document.getElementById('shortsBlock');
-            const search = document.getElementById('searchBlock');
-            const messenger = document.getElementById('messengerBlock');
-
-            if (menuId === 'm1') {
-                shorts.style.display = 'block';
-                search.style.display = 'none';
-                messenger.style.display = 'none';
-            } else if (menuId === 'm2') {
-                shorts.style.display = 'none';
-                search.style.display = 'flex';
-                messenger.style.display = 'none';
-            } else if (menuId === 'm3') {
-                shorts.style.display = 'none';
-                search.style.display = 'none';
-                messenger.style.display = 'flex';
-            }
-        }
-
-        // Тоггл лайка
-        let isLiked = false;
-        function tl() {
-            const likeBtn = document.getElementById('likeBtn');
-            const likeCount = document.getElementById('likeCount');
-            let currentLikes = parseInt(likeCount.innerText);
-
-            if (!isLiked) {
-                likeBtn.classList.add('liked');
-                likeCount.innerText = currentLikes + 1;
-                isLiked = true;
-            } else {
-                likeBtn.classList.remove('liked');
-                likeCount.innerText = currentLikes - 1;
-                isLiked = false;
-            }
-        }
-
-        // Поиск на странице "Поиск"
-        function executeSearch() {
-            const query = document.getElementById('searchInput').value.trim();
-            if (query) alert('Поиск по запросу: ' + query);
-        }
-
-        // Поиск пользователей в чате
-        function searchUser() {
-            const user = document.getElementById('userSearchInput').value.trim();
-            if (user) alert('Поиск пользователя: ' + user);
-        }
-
-        // Отправка сообщений
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const text = input.value.trim();
-            if (!text) return;
-
-            const chatBody = document.getElementById('chatBody');
-            const msgHtml = `<div class="msg-sent">${text}</div>`;
-            
-            chatBody.insertAdjacentHTML('beforeend', msgHtml);
-            input.value = '';
-            chatBody.scrollTop = chatBody.scrollHeight;
-        }
-
-        // Обработка отправки по Enter
-        document.getElementById('chatInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') sendMessage();
-        });
-    </script>
-</body>
-</html>
