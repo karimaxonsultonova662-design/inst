@@ -104,3 +104,141 @@
                 <div class="trend-title">Популярное сейчас</div>
                 <div class="trend-item"><div class="trend-name">#VibeO_Launch</div><div class="trend-count">124K кликов</div></div>
                 <div class="trend-item"><div class="trend-name">#GlobalNetwork</div><div class="trend-count">89K кликов</div></div>
+❤️ <span id="likeCount">42</span>
+                </button>
+            </div>
+
+            <div id="searchBlock" class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Введите поисковый запрос...">
+                <button class="search-btn" onclick="executeSearch()">Найти</button>
+            </div>
+
+            <div id="messengerBlock" class="messenger-box">
+                <div class="chat-header-container">
+                    <div class="chat-header-title">Диалоги</div>
+                    <div class="user-search-box">
+                        <input type="text" id="userSearchInput" class="user-search-input" placeholder="Поиск пользователя...">
+                        <button class="user-search-btn" onclick="searchUser()">Найти</button>
+                    </div>
+                </div>
+                <div id="chatBody" class="chat-body">
+                    <div class="msg-received">Добро пожаловать в VibeO! Рады вас видеть.</div>
+                </div>
+                <div class="chat-footer">
+                    <input type="text" id="chatInput" class="chat-input" placeholder="Напишите сообщение...">
+                    <button class="btn-send" onclick="sendMessage()">Отправить</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-right">
+            <div class="trend-box">
+                <div class="trend-title">Актуальные тренды</div>
+                <div class="trend-item">
+                    <div class="trend-name">#VibeO2026</div>
+                    <div class="trend-count">1.2M просмотров</div>
+                </div>
+                <div class="trend-item">
+                    <div class="trend-name">#WebDevelopment</div>
+                    <div class="trend-count">850K просмотров</div>
+                </div>
+                <div class="trend-item">
+                    <div class="trend-name">#GlobalNetwork</div>
+                    <div class="trend-count">430K просмотров</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Регистрация аккаунта
+        function accountRegister() {
+            const email = document.getElementById('regEmail').value.trim();
+            const nick = document.getElementById('regNick').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+
+            if (!email || !nick || !phone) {
+                alert('Пожалуйста, заполните все поля!');
+                return;
+            }
+
+            const formattedNick = nick.startsWith('@') ? nick : '@' + nick;
+            document.getElementById('uBadge').innerText = formattedNick;
+            document.getElementById('regScreen').style.display = 'none';
+        }
+
+        // Переключение меню (Главная, Поиск, Чаты)
+        function sm(menuId) {
+            document.querySelectorAll('.menu-link').forEach(link => link.classList.remove('active'));
+            document.getElementById(menuId).classList.add('active');
+
+            const shorts = document.getElementById('shortsBlock');
+            const search = document.getElementById('searchBlock');
+            const messenger = document.getElementById('messengerBlock');
+
+            if (menuId === 'm1') {
+                shorts.style.display = 'block';
+                search.style.display = 'none';
+                messenger.style.display = 'none';
+            } else if (menuId === 'm2') {
+                shorts.style.display = 'none';
+                search.style.display = 'flex';
+                messenger.style.display = 'none';
+            } else if (menuId === 'm3') {
+                shorts.style.display = 'none';
+                search.style.display = 'none';
+                messenger.style.display = 'flex';
+            }
+        }
+
+        // Тоггл лайка
+        let isLiked = false;
+        function tl() {
+            const likeBtn = document.getElementById('likeBtn');
+            const likeCount = document.getElementById('likeCount');
+            let currentLikes = parseInt(likeCount.innerText);
+
+            if (!isLiked) {
+                likeBtn.classList.add('liked');
+                likeCount.innerText = currentLikes + 1;
+                isLiked = true;
+            } else {
+                likeBtn.classList.remove('liked');
+                likeCount.innerText = currentLikes - 1;
+                isLiked = false;
+            }
+        }
+
+        // Поиск на странице "Поиск"
+        function executeSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) alert('Поиск по запросу: ' + query);
+        }
+
+        // Поиск пользователей в чате
+        function searchUser() {
+            const user = document.getElementById('userSearchInput').value.trim();
+            if (user) alert('Поиск пользователя: ' + user);
+        }
+
+        // Отправка сообщений
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const chatBody = document.getElementById('chatBody');
+            const msgHtml = `<div class="msg-sent">${text}</div>`;
+            
+            chatBody.insertAdjacentHTML('beforeend', msgHtml);
+            input.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        // Обработка отправки по Enter
+        document.getElementById('chatInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>
